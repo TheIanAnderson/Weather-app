@@ -1,7 +1,11 @@
-header{
-    background-image: linear-gradient(to bottom, #00eeff, #0080ff);
+header {
+  background-image: linear-gradient(to bottom, #00eeff, #0080ff);
 }
 
-body{
-    background-color: #0080ff ;
+body {
+  background-color: #0080ff;
+}
+
+#citySearch {
+  background-color: rgb(236, 236, 236);
 }
