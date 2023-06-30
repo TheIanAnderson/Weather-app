@@ -2,7 +2,14 @@ const apiKey = "bc84d055ec0f2dab044ce4d973a5b1d4";
 const apiURL = "https://api.openweathermap.org/";
 const searchButton = document.getElementById("myButton");
 const searchInput = document.querySelector(".form-control");
+const displayDate = document.getElementById("todays-date");
+const todaysWeather = document.getElementsByClassName("results");
 const userInput = searchInput.value;
+const todaysDate = dayjs().format("dddd, MMMM YYYY");
+const currentTime = dayjs().format("h:mm A");
+
+displayDate.innerHTML = todaysDate;
+console.log(todaysWeather);
 
 searchButton.addEventListener("click", function () {
   cityLocationFetch(searchInput.value);
@@ -22,13 +29,11 @@ function cityLocationFetch(userInput) {
         const cityName = search.name;
         const cityLon = search.lon;
         const cityLat = search.lat;
-        console.log(`City: ${cityName}, Lon: ${cityLon}, Lat: ${cityLat}`);
         // fetchWeather(data[0][1][2]);
         setCityLon(cityLon);
         setCityLat(cityLat);
         currentWeatherFetch();
       }
-      console.log(data[0]);
     })
     .catch(function (error) {
       console.error(error);
@@ -55,10 +60,13 @@ function currentWeatherFetch() {
       if (data === "") {
         alert("Sorry, can't find that place.");
       } else {
-        console.log(data);
+        console.log(data.main.temp);
+        const cityTemp = data.main.temp;
       }
     })
     .catch(function (error) {
       console.error(error);
     });
 }
+
+function displayWeather() {}

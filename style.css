@@ -9,3 +9,7 @@ body {
 #citySearch {
   background-color: rgb(236, 236, 236);
 }
+
+.results {
+  display: none;
+}

@@ -20,8 +20,14 @@
       >
         <h1>How's the weather?</h1>
       </div>
-      <br />
+      <h5
+      class=" text-light container-fluid d-flex justify-content-center align-items-center text-light"
+      id="todays-date"
+    >
+    </h5>
     </header>
+    <br>
+    <br>
 
     <main>
       <div class="container">
@@ -38,7 +44,7 @@
                 <div class="input-group">
                   <div class="input-group-prepend"></div>
                   <textarea
-                    class="form-control"
+                    class="form-control m-2"
                     aria-label="With textarea"
                     placeholder="Enter city name here"
                   ></textarea>
@@ -60,25 +66,26 @@
             <div class="card" id="citySearch">
               <div>
                 <br />
-                <h5
-                  class="card-title text-primary container-fluid d-flex justify-content-center"
-                >
-                  Today's Weather:
-                </h5>
-                <div class="input-group">
+                <div class="input-group results">
                   <div class="input-group-prepend">
                     <div class="container">
                       <div class="row">
                         <div class="col-sm-12 col-md-4">
+                          <div class="card bg-dark" id="citySearch">
+                            <div class="card-body">
+                              <div class="d-none" id="result1">
+                                <br />
+                                <h6>Saved Cities</h6>
+                                <ul class="list-group"></ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                        <div class="col-sm-12 col-md-4">
                           <div class="card" id="citySearch">
                             <div class="card-body">
-                              <h5 class="card-title text-primary text-center">Today's Weather:</h5>
-                              <div class="input-group">
-                                <textarea class="form-control" aria-label="With textarea" placeholder="Enter city name here"></textarea>
-                                <div class="input-group-append">
-                                  <button type="button" class="btn btn-primary" id="myButton">Search</button>
-                                </div>
-                              </div>
+                              <h5 class="card-title text-primary text-center"></h5>
                               <div class="d-none">
                                 <br />
                                 <h6>Saved Cities</h6>
@@ -91,32 +98,7 @@
                         <div class="col-sm-12 col-md-4">
                           <div class="card" id="citySearch">
                             <div class="card-body">
-                              <h5 class="card-title text-primary text-center">Where we headed?</h5>
-                              <div class="input-group">
-                                <textarea class="form-control" aria-label="With textarea" placeholder="Enter city name here"></textarea>
-                                <div class="input-group-append">
-                                  <button type="button" class="btn btn-primary" id="myButton">Search</button>
-                                </div>
-                              </div>
-                              <div class="d-none">
-                                <br />
-                                <h6>Saved Cities</h6>
-                                <ul class="list-group"></ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    
-                        <div class="col-sm-12 col-md-4">
-                          <div class="card" id="citySearch">
-                            <div class="card-body">
-                              <h5 class="card-title text-primary text-center">Where we headed?</h5>
-                              <div class="input-group">
-                                <textarea class="form-control" aria-label="With textarea" placeholder="Enter city name here"></textarea>
-                                <div class="input-group-append">
-                                  <button type="button" class="btn btn-primary" id="myButton">Search</button>
-                                </div>
-                              </div>
+                              <h5 class="card-title text-primary text-center"></h5>
                               <div class="d-none">
                                 <br />
                                 <h6>Saved Cities</h6>
@@ -169,5 +151,10 @@
     </main>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script
+  src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+  integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+  crossorigin="anonymous"
+></script>
   <script src="./script.js"></script>
 </html>
