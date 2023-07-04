@@ -8,7 +8,6 @@ const todaysWeather = document.querySelector("#result1");
 const userInput = searchInput.value;
 const todaysDate = dayjs().format("dddd, MMMM YYYY");
 const currentTime = dayjs().format("h:mm A");
-console.log(makeResultsVisible);
 displayDate.innerHTML = todaysDate;
 
 searchButton.addEventListener("click", function () {
@@ -70,6 +69,7 @@ function currentWeatherFetch() {
         const cityTemp = data.main.temp;
         // console.log(cityTemp)
         displayWeather(cityTemp);
+        appendListItem();
       }
     })
     .catch(function (error) {
@@ -80,5 +80,15 @@ function currentWeatherFetch() {
 function displayWeather(data) {
   const cityName = localStorage.getItem("City Name");
   todaysWeather.innerHTML =
-    "The weather in " + cityName + " right now is " + data + " degrees!";
+    "The weather in " + cityName + " right now is " + data + " !";
+}
+
+
+function appendListItem(input) {
+  input = document.querySelector(".form-control");
+  var newListElement = document.createElement("li");
+  newListElement.textContent = input.value;
+  var list = document.getElementById("list");
+  list.appendChild(newListElement);
+  
 }
