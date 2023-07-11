@@ -13,3 +13,8 @@ body {
 #results {
   display: none;
 }
+
+.noDot{
+  text-decoration: underline;
+  list-style:none;
+}

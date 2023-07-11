@@ -83,12 +83,20 @@ function displayWeather(data) {
     "The weather in " + cityName + " right now is " + data + " !";
 }
 
-
 function appendListItem(input) {
   input = document.querySelector(".form-control");
   var newListElement = document.createElement("li");
   newListElement.textContent = input.value;
   var list = document.getElementById("list");
   list.appendChild(newListElement);
-  
+  newListElement.forEach(addElementId("appendedList"))
 }
+
+function appendedListSearch(){
+
+}
+
+
+// What I need to do is have my appended li become clickable, where the input field recieves the city name and searches it.
+// What if I made each li a button instead, and that button passed the city name...
+// Oh, maybe I literally just call my own function with the appended data haha, let's try that.
