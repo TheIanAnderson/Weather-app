@@ -12,9 +12,9 @@ displayDate.innerHTML = todaysDate;
 
 searchButton.addEventListener("click", function () {
   cityLocationFetch(searchInput.value);
+  fiveDayWeatherForcastFetch(userInput)
   makeResultsVisible.setAttribute("style", "display:flex");
 });
-
 function cityLocationFetch(userInput) {
   const getCityLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${userInput}&limit=5&appid=${API_KEY}`;
   fetch(getCityLocation)
@@ -41,19 +41,18 @@ function cityLocationFetch(userInput) {
       console.error(error);
     });
 }
-
 function setCityLon(variable) {
   localStorage.setItem("City Lon", variable);
 }
-
 function setCityLat(variable) {
   localStorage.setItem("City Lat", variable);
 }
-
+function setCityTemp(variable) {
+  localStorage.setItem("Temp", variable);
+}
 function setCityName(variable) {
   localStorage.setItem("City Name", variable);
 }
-
 function currentWeatherFetch() {
   var cityLat = localStorage.getItem("City Lat");
   var cityLon = localStorage.getItem("City Lon");
@@ -69,6 +68,8 @@ function currentWeatherFetch() {
         const cityTemp = data.main.temp;
         // console.log(cityTemp)
         displayWeather(cityTemp);
+        setCityTemp(cityTemp)
+        console.log(cityTemp);
         appendListItem();
       }
     })
@@ -77,10 +78,28 @@ function currentWeatherFetch() {
     });
 }
 
+
+function fiveDayWeatherForcastFetch(userInput){
+  var cityLat = localStorage.getItem("City Lat");
+  var cityLon = localStorage.getItem("City Lon");
+  const get5DayForcast = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${API_KEY}`
+  console.log(get5DayForcast);
+  fetch(get5DayForcast)
+  .then(function (response){
+    return response.json();
+  })
+  .then(function (data){
+    console.log(data);
+    const fiveDayForcastData = data
+});
+
+}
+
+
 function displayWeather(data) {
-  const cityName = localStorage.getItem("City Name");
+  const cityName = localStorage.getItem("City Name")
   todaysWeather.innerHTML =
-    "The weather in " + cityName + " right now is " + data + " !";
+    "The temperature in " + cityName + " right now is " + data + " !";
 }
 
 function appendListItem(input) {
@@ -92,9 +111,6 @@ function appendListItem(input) {
   newListElement.forEach(addElementId("appendedList"))
 }
 
-function appendedListSearch(){
-
-}
 
 
 // What I need to do is have my appended li become clickable, where the input field recieves the city name and searches it.
