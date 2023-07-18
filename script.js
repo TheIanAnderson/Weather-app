@@ -4,16 +4,15 @@ const searchButton = document.getElementById("myButton");
 const displayDate = document.getElementById("todays-date");
 const makeResultsVisible = document.querySelector("#results");
 const todaysWeather = document.querySelector("#result1");
-
-const todaysDate = dayjs().format("dddd, MMMM YYYY");
+const todaysDate = dayjs().format("dddd MMMM DD, YYYY");
 const currentTime = dayjs().format("h:mm A");
 displayDate.innerHTML = todaysDate;
 
 searchButton.addEventListener("click", function () {
   const searchInput = document.querySelector(".form-control");
-  const userInput = searchInput.value;
+  // const userInput = searchInput.value;
   cityLocationFetch(searchInput.value);
-  fiveDayWeatherForcastFetch(userInput);
+  fiveDayWeatherForcastFetch(searchInput.value);
   makeResultsVisible.setAttribute("style", "display:flex");
 });
 function cityLocationFetch(searchValue) {
@@ -32,31 +31,23 @@ function cityLocationFetch(searchValue) {
         const cityLon = search.lon;
         const cityLat = search.lat;
         // fetchWeather(data[0][1][2]);
-        setCityLon(cityLon);
-        setCityLat(cityLat);
-        setCityName(cityName);
-        currentWeatherFetch(searchValue);
+        // setCityName(cityName);
+        currentWeatherFetch(searchValue, cityLat, cityLon, cityName);
+        fiveDayWeatherForcastFetch(searchValue, cityLat, cityLon);
       }
     })
     .catch(function (error) {
       console.error(error);
     });
 }
-function setCityLon(variable) {
-  localStorage.setItem("City Lon", variable);
-}
-function setCityLat(variable) {
-  localStorage.setItem("City Lat", variable);
-}
+
 function setCityTemp(variable) {
   localStorage.setItem("Temp", variable);
 }
 function setCityName(variable) {
   localStorage.setItem("City Name", variable);
 }
-function currentWeatherFetch(searchValue) {
-  var cityLat = localStorage.getItem("City Lat");
-  var cityLon = localStorage.getItem("City Lon");
+function currentWeatherFetch(searchValue, cityLat, cityLon) {
   const getCurrentWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${cityLat}&lon=${cityLon}&appid=${API_KEY}&units=imperial`;
   fetch(getCurrentWeather)
     .then(function (response) {
@@ -70,12 +61,12 @@ function currentWeatherFetch(searchValue) {
         const cityTemp = data.main.temp;
         const cityWindSpeed = data.wind.speed;
         const cityHumidity = data.main.humidity;
-        console.log(data);
         console.log(cityHumidity);
         console.log(cityWindSpeed);
         // console.log(cityTemp)
-        displayWeather(cityTemp, cityName);
-        setCityTemp(cityTemp);
+        displayWeather(cityTemp, cityName, cityWindSpeed, cityHumidity),
+          cityTemp;
+        // setCityTemp(cityTemp);
         console.log(cityTemp);
         appendListItem();
       }
@@ -85,24 +76,46 @@ function currentWeatherFetch(searchValue) {
     });
 }
 
-function fiveDayWeatherForcastFetch(userInput) {
-  var cityLat = localStorage.getItem("City Lat");
-  var cityLon = localStorage.getItem("City Lon");
-  const get5DayForcast = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${API_KEY}`;
-  console.log(get5DayForcast);
+function fiveDayWeatherForcastFetch(searchValue, cityLat, cityLon) {
+  const get5DayForcast = `https://api.openweathermap.org/data/2.5/forecast?units=imperial&lat=${cityLat}&lon=${cityLon}&appid=${API_KEY}`;
   fetch(get5DayForcast)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
       console.log(data);
-      const fiveDayForcastData = data;
+      const dayOneOfFive = data.list[0].dt_txt;
+      const dayTwoOfFive = data.list[1].dt_txt;
+      // const dayThreeOfFive = data.list[2].dt_txt;
+      // const dayFourOfFive = data.list[3].dt_txt;
+      // const dayFiveOfFive = data.list[4].dt_txt;
+
+      const dayOneOfFiveTemp = data.list[0].main.temp;
+      const dayTwoOfFiveTemp = data.list[1].main.temp;
+      // const dayThreeOfFiveTemp = data.list[2].main.temp;
+      // const dayFourOfFiveTemp = data.list[3].main.temp;
+      // const dayFiveOfFiveTemp = data.list[4].main.temp;
+
+      console.log(dayOneOfFive, dayOneOfFiveTemp);
+      console.log(dayTwoOfFive, dayTwoOfFiveTemp);
+      // console.log(dayThreeOfFive, dayThreeOfFiveTemp);
+      // console.log(dayFourOfFive, dayFourOfFiveTemp);
+      // console.log(dayFiveOfFive, dayFiveOfFiveTemp);
     });
 }
 
-function displayWeather(data, cityName) {
+function displayWeather(temp, cityName, cityWindSpeed, cityHumidity) {
   todaysWeather.innerHTML =
-    "The temperature in " + cityName + " right now is " + data + " !";
+    "The temperature in " +
+    cityName +
+    " right now is " +
+    temp +
+    " with a wind speed of " +
+    cityWindSpeed +
+    "mph and humidity of " +
+    cityHumidity +
+    "%";
+  ("!");
 }
 
 function appendListItem(input) {
@@ -111,9 +124,4 @@ function appendListItem(input) {
   newListElement.textContent = input.value;
   var list = document.getElementById("list");
   list.appendChild(newListElement);
-  newListElement.forEach(addElementId("appendedList"));
 }
-
-// What I need to do is have my appended li become clickable, where the input field recieves the city name and searches it.
-// What if I made each li a button instead, and that button passed the city name...
-// Oh, maybe I literally just call my own function with the appended data haha, let's try that.
