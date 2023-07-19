@@ -6,6 +6,11 @@ const makeResultsVisible = document.querySelector("#results");
 const todaysWeather = document.querySelector("#result1");
 const todaysDate = dayjs().format("dddd MMMM DD, YYYY");
 const currentTime = dayjs().format("h:mm A");
+const fiveDayForcastOne = document.querySelector("#fiveDayOne");
+const fiveDayForcastTwo = document.querySelector("#fiveDayTwo");
+const fiveDayForcastThree = document.querySelector("#fiveDayThree");
+const fiveDayForcastFour = document.querySelector("#fiveDayFour");
+const fiveDayForcastFive = document.querySelector("#fiveDayFive");
 displayDate.innerHTML = todaysDate;
 
 searchButton.addEventListener("click", function () {
@@ -85,22 +90,35 @@ function fiveDayWeatherForcastFetch(searchValue, cityLat, cityLon) {
     .then(function (data) {
       console.log(data);
       const dayOneOfFive = data.list[0].dt_txt;
-      const dayTwoOfFive = data.list[1].dt_txt;
-      // const dayThreeOfFive = data.list[2].dt_txt;
-      // const dayFourOfFive = data.list[3].dt_txt;
-      // const dayFiveOfFive = data.list[4].dt_txt;
+      const dayTwoOfFive = data.list[6].dt_txt;
+      const dayThreeOfFive = data.list[14].dt_txt;
+      const dayFourOfFive = data.list[22].dt_txt;
+      const dayFiveOfFive = data.list[30].dt_txt;
 
       const dayOneOfFiveTemp = data.list[0].main.temp;
-      const dayTwoOfFiveTemp = data.list[1].main.temp;
-      // const dayThreeOfFiveTemp = data.list[2].main.temp;
-      // const dayFourOfFiveTemp = data.list[3].main.temp;
-      // const dayFiveOfFiveTemp = data.list[4].main.temp;
+      const dayTwoOfFiveTemp = data.list[6].main.temp;
+      const dayThreeOfFiveTemp = data.list[14].main.temp;
+      const dayFourOfFiveTemp = data.list[22].main.temp;
+      const dayFiveOfFiveTemp = data.list[30].main.temp;
 
       console.log(dayOneOfFive, dayOneOfFiveTemp);
       console.log(dayTwoOfFive, dayTwoOfFiveTemp);
-      // console.log(dayThreeOfFive, dayThreeOfFiveTemp);
-      // console.log(dayFourOfFive, dayFourOfFiveTemp);
-      // console.log(dayFiveOfFive, dayFiveOfFiveTemp);
+      console.log(dayThreeOfFive, dayThreeOfFiveTemp);
+      console.log(dayFourOfFive, dayFourOfFiveTemp);
+      console.log(dayFiveOfFive, dayFiveOfFiveTemp);
+
+      displayFiveDayWeather(
+        dayOneOfFive,
+        dayOneOfFiveTemp,
+        dayTwoOfFive,
+        dayTwoOfFiveTemp,
+        dayThreeOfFive,
+        dayThreeOfFiveTemp,
+        dayFourOfFive,
+        dayFourOfFiveTemp,
+        dayFiveOfFive,
+        dayFiveOfFiveTemp
+      );
     });
 }
 
@@ -118,10 +136,46 @@ function displayWeather(temp, cityName, cityWindSpeed, cityHumidity) {
   ("!");
 }
 
+function displayFiveDayWeather(
+  one,
+  two,
+  three,
+  four,
+  five,
+  six,
+  seven,
+  eight,
+  nine,
+  ten
+) {
+  fiveDayForcastOne.innerHTML =
+    "The temperature on " + one + " will be " + two + "!";
+  fiveDayForcastTwo.innerHTML =
+    "The temperature on " + three + " will be " + four + "!";
+  fiveDayForcastThree.innerHTML =
+    "The temperature on " + five + " will be " + six + "!";
+  fiveDayForcastFour.innerHTML =
+    "The temperature on " + seven + " will be " + eight + "!";
+  fiveDayForcastFive.innerHTML =
+    "The temperature on " + nine + " will be " + ten + "!";
+}
+
+// function displayClickedButton(){
+//   localStorage.getItem("past search");
+//   let button = document.querySelector(".savedBtn");
+//   let previousSearch = button.innerHTML
+//   button.addEventListener("click", function(){
+//     displayWeather(previousSearch);
+//     displayFiveDayWeather(previousSearch);
+//   })
+// }
+
 function appendListItem(input) {
   input = document.querySelector(".form-control");
-  var newListElement = document.createElement("li");
+  var newListElement = document.createElement("button");
+  newListElement.classList.add("row", "savedBtn");
   newListElement.textContent = input.value;
+  localStorage.setItem("past search", input.value);
   var list = document.getElementById("list");
   list.appendChild(newListElement);
 }
