@@ -15,11 +15,19 @@ displayDate.innerHTML = todaysDate;
 
 searchButton.addEventListener("click", function () {
   const searchInput = document.querySelector(".form-control");
-  // const userInput = searchInput.value;
   cityLocationFetch(searchInput.value);
   fiveDayWeatherForcastFetch(searchInput.value);
   makeResultsVisible.setAttribute("style", "display:flex");
 });
+
+function addEventListenerToPreviousSearch(element) {
+  element.addEventListener("click", function () {
+    const previousSearchValue = element.getAttribute("data-search-value");
+    cityLocationFetch(previousSearchValue);
+    fiveDayWeatherForcastFetch(previousSearchValue);
+  });
+}
+
 function cityLocationFetch(searchValue) {
   const getCityLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${searchValue}&limit=5&appid=${API_KEY}`;
   fetch(getCityLocation)
@@ -35,8 +43,6 @@ function cityLocationFetch(searchValue) {
         const cityName = search.name;
         const cityLon = search.lon;
         const cityLat = search.lat;
-        // fetchWeather(data[0][1][2]);
-        // setCityName(cityName);
         currentWeatherFetch(searchValue, cityLat, cityLon, cityName);
         fiveDayWeatherForcastFetch(searchValue, cityLat, cityLon);
       }
@@ -66,13 +72,8 @@ function currentWeatherFetch(searchValue, cityLat, cityLon) {
         const cityTemp = data.main.temp;
         const cityWindSpeed = data.wind.speed;
         const cityHumidity = data.main.humidity;
-        console.log(cityHumidity);
-        console.log(cityWindSpeed);
-        // console.log(cityTemp)
         displayWeather(cityTemp, cityName, cityWindSpeed, cityHumidity),
           cityTemp;
-        // setCityTemp(cityTemp);
-        console.log(cityTemp);
         appendListItem();
       }
     })
@@ -160,22 +161,13 @@ function displayFiveDayWeather(
     "The temperature on " + nine + " will be " + ten + "!";
 }
 
-// function displayClickedButton(){
-//   localStorage.getItem("past search");
-//   let button = document.querySelector(".savedBtn");
-//   let previousSearch = button.innerHTML
-//   button.addEventListener("click", function(){
-//     displayWeather(previousSearch);
-//     displayFiveDayWeather(previousSearch);
-//   })
-// }
-
 function appendListItem(input) {
   input = document.querySelector(".form-control");
   var newListElement = document.createElement("button");
-  newListElement.classList.add("row", "savedBtn");
+  newListElement.classList.add("row", "savedBtn", "previous-search");
   newListElement.textContent = input.value;
-  localStorage.setItem("past search", input.value);
+  newListElement.dataset.searchValue = input.value;
   var list = document.getElementById("list");
   list.appendChild(newListElement);
+  addEventListenerToPreviousSearch(newListElement);
 }
